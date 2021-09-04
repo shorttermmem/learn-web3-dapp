@@ -23,16 +23,17 @@ const Connect = ({ account, setAccount }: { account: PolygonAccountT, setAccount
       // TODO
       // Connect to Polygon using Web3Provider and Metamask
       // Define address and network      
+      await provider.send("eth_requestAccounts", []);
       const web3provider = new ethers.providers.Web3Provider(window.ethereum, "any");
       const signer = web3provider.getSigner();
       const address = await signer.getAddress();
       const network = ethers.providers.getNetwork(await signer.getChainId());
 
-      setAccount(address)
-      setNetwork(network)
+      setAccount(address);
+      setNetwork(network);
       
     } else {
-      alert("Please install Metamask at https://metamask.io")
+      alert("Please install Metamask at https://metamask.io");
     }
   }
 
