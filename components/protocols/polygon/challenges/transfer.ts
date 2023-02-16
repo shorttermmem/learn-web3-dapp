@@ -18,10 +18,23 @@ const transfer = async () => {
     const gas_price = ethers.utils.hexlify(
       parseInt(currentGasPrice.toString()),
     );
+    //await provider.getGasPrice().then((res) => {
+    //  return ethers.utils.formatUnits(res, 'gwei');
+    //})
 
-    const transaction = undefined;
+    const transaction = {
+      from: send_account,
+      to: RECIPIENT,
+      value: ethers.utils.parseEther(AMOUNT),
+      // gas
+      gasPrice: gas_price,
+      gasLimit: ethers.utils.hexlify(100000), // doesnt match with API, https://web3js.readthedocs.io/en/v1.2.11/web3-eth.html#id84
+      // data
+      nonce: provider.getTransactionCount(send_account, 'latest'),
+      // etc...
+    };
 
-    const hash = undefined;
+    const hash = await provider.getSigner().sendTransaction(transaction);
     const receipt = await hash.wait();
     return {hash: receipt.transactionHash};
   } catch (error) {
